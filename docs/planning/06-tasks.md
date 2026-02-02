@@ -117,7 +117,7 @@ flowchart TD
 > 화면: 전체
 > 디자인 참고: insightflo-homepage의 Header.astro, Footer.astro, Layout.astro
 
-### [ ] P1-S0-T1: Header 컴포넌트
+### [x] P1-S0-T1: Header 컴포넌트
 
 - **담당**: frontend-specialist
 - **의존**: P0-T0.3
@@ -139,7 +139,7 @@ flowchart TD
 
 ---
 
-### [ ] P1-S0-T2: Footer 컴포넌트
+### [x] P1-S0-T2: Footer 컴포넌트
 
 - **담당**: frontend-specialist
 - **의존**: P0-T0.3
@@ -159,7 +159,7 @@ flowchart TD
 
 ---
 
-### [ ] P1-S0-T3: Layout 컴포넌트
+### [x] P1-S0-T3: Layout 컴포넌트
 
 - **담당**: frontend-specialist
 - **의존**: P1-S0-T1, P1-S0-T2
@@ -179,7 +179,7 @@ flowchart TD
 
 ---
 
-### [ ] P1-S0-V: 공통 레이아웃 검증
+### [x] P1-S0-V: 공통 레이아웃 검증
 
 - **담당**: test-specialist
 - **의존**: P1-S0-T3

@@ -1,0 +1,90 @@
+---
+/**
+ * Hero 섹션
+ * @TASK P2-S1-T1
+ * @SPEC docs/planning/06-screens.md#1.2-히어로-섹션
+ *
+ * 기능:
+ * - hero-gradient 배경 + tech-pattern
+ * - blur 효과 (bg-blue-500/10 blur-[120px])
+ * - 메인 캐치프레이즈: "AI로 더 빠르게, 관세사로 더 정확하게"
+ * - 서브 카피: 해외 수출 인증·허가 안내
+ * - CTA: [무료 견적 받기], [서비스 보기]
+ */
+---
+
+<section
+  id="hero"
+  class="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden"
+>
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 tech-pattern opacity-30"></div>
+
+  <!-- Blur Effects -->
+  <div class="absolute top-1/4 -right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px]"></div>
+  <div class="absolute bottom-1/4 -left-20 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px]"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-8 backdrop-blur-sm">
+      <span class="material-symbols-outlined text-blue-400 text-sm">verified</span>
+      <span class="text-sm font-medium text-white/90">전문 관세사 운영 · 전문가배상책임보험 가입</span>
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight">
+      AI로 더 빠르게,<br />
+      <span class="text-blue-400">관세사로 더 정확하게</span>
+    </h1>
+
+    <!-- Sub Copy -->
+    <p class="text-lg sm:text-xl md:text-2xl text-white/80 mb-4 leading-relaxed max-w-3xl mx-auto">
+      해외 수출 인증·허가, 이제 합리적인 비용으로 시작하세요
+    </p>
+    <p class="text-base sm:text-lg text-white/60 mb-10 max-w-2xl mx-auto">
+      FDA, EU, 일본 인증부터 통관까지 원스톱 지원
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a
+        href="#cta"
+        class="inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-4 sm:py-5 bg-white text-navy rounded-xl font-bold text-base sm:text-lg hover:shadow-2xl hover:scale-105 transition-all"
+      >
+        <span class="material-symbols-outlined text-xl">mail</span>
+        무료 견적 받기
+      </a>
+      <a
+        href="#services"
+        class="inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-4 sm:py-5 bg-transparent border border-white/30 text-white rounded-xl font-bold text-base sm:text-lg hover:bg-white/10 transition-all"
+      >
+        <span class="material-symbols-outlined text-xl">arrow_downward</span>
+        서비스 보기
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-3 gap-4 sm:gap-8 mt-16 max-w-2xl mx-auto">
+      <div class="text-center">
+        <div class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">160만원</div>
+        <div class="text-xs sm:text-sm text-white/60 mt-1">FDA 인증</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">30일</div>
+        <div class="text-xs sm:text-sm text-white/60 mt-1">평균 처리 기간</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">11년</div>
+        <div class="text-xs sm:text-sm text-white/60 mt-1">관세사 경력</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <a href="#value-proposition" class="text-white/50 hover:text-white/80 transition-colors">
+      <span class="material-symbols-outlined text-3xl">keyboard_arrow_down</span>
+    </a>
+  </div>
+</section>

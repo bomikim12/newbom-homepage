@@ -1,0 +1,141 @@
+---
+/**
+ * Services 섹션 (서비스 소개)
+ * @TASK P2-S1-T3
+ * @SPEC docs/planning/06-screens.md#1.4-서비스-소개-섹션
+ *
+ * 기능:
+ * - 섹션 헤더: "Our Services" + "우리의 서비스"
+ * - 3개 서비스 카드 (rounded-3xl)
+ * - 각 카드: 아이콘 + 제목 + 설명 + 가격 + 체크리스트
+ */
+
+const services = [
+  {
+    id: 'fda',
+    icon: 'verified',
+    iconColor: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    title: 'FDA 인증',
+    subtitle: '미국 수출',
+    description: '미국 식품의약국(FDA) 시설등록, 식품안전계획(PCQI), 영양성분 라벨링까지 한 번에',
+    price: '160만원',
+    priceNote: '시설허가 100만 + DUNS 10만 + 라벨링 50만',
+    features: [
+      'FDA 시설등록 (FCE/SID)',
+      'DUNS 번호 발급',
+      'FDA 규정 라벨링',
+      '영양성분 분석표',
+    ],
+  },
+  {
+    id: 'eu',
+    icon: 'public',
+    iconColor: 'text-green-600',
+    bgColor: 'bg-green-50',
+    title: 'EU 통관',
+    subtitle: '유럽 수출',
+    description: 'EU 식품정보규정(FIC) 준수 라벨링, 원재료 검토, CE 마킹 지원',
+    price: '150만원',
+    priceNote: '라벨링 100만 + 원재료 검토 50만',
+    features: [
+      'EU FIC 규정 라벨링',
+      '14대 알러젠 표기',
+      '영양성분 kJ/kcal 병기',
+      '원재료 허가 검토',
+    ],
+  },
+  {
+    id: 'japan',
+    icon: 'flag',
+    iconColor: 'text-red-600',
+    bgColor: 'bg-red-50',
+    title: '일본 인증',
+    subtitle: '일본 수출',
+    description: '후생노동성 등록, 식품위생법 준수, 일본어 라벨링 지원',
+    price: '50만원',
+    priceNote: '후생성 등록 전체 비용',
+    features: [
+      '후생노동성 등록',
+      '식품위생법 검토',
+      '일본어 라벨링',
+      '수입신고 지원',
+    ],
+  },
+];
+---
+
+<section id="services" class="py-20 md:py-24 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16 md:mb-20">
+      <h2 class="text-sm font-bold text-deep-blue uppercase tracking-widest mb-3">
+        Our Services
+      </h2>
+      <h3 class="text-3xl md:text-4xl font-bold text-navy">
+        우리의 서비스
+      </h3>
+      <p class="text-slate-600 mt-4 max-w-2xl mx-auto">
+        해외 수출에 필요한 모든 인증·허가를 합리적인 가격으로 제공합니다
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      {services.map((service) => (
+        <div
+          id={service.id}
+          class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-shadow"
+        >
+          <!-- Icon -->
+          <div class={`w-14 h-14 md:w-16 md:h-16 ${service.bgColor} rounded-2xl flex items-center justify-center ${service.iconColor} mb-6 md:mb-8`}>
+            <span class="material-symbols-outlined text-3xl md:text-4xl">{service.icon}</span>
+          </div>
+
+          <!-- Title & Subtitle -->
+          <div class="mb-4">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              {service.subtitle}
+            </span>
+            <h4 class="text-xl md:text-2xl font-bold text-navy mt-1">
+              {service.title}
+            </h4>
+          </div>
+
+          <!-- Description -->
+          <p class="text-slate-600 mb-6 leading-relaxed text-sm md:text-base">
+            {service.description}
+          </p>
+
+          <!-- Price -->
+          <div class="mb-6 pb-6 border-b border-slate-100">
+            <div class="text-3xl md:text-4xl font-extrabold text-navy">
+              {service.price}
+            </div>
+            <div class="text-xs text-slate-400 mt-1">
+              {service.priceNote}
+            </div>
+          </div>
+
+          <!-- Features -->
+          <ul class="space-y-3">
+            {service.features.map((feature) => (
+              <li class="flex items-center gap-3 text-slate-700">
+                <span class="material-symbols-outlined text-blue-500 text-lg">check_circle</span>
+                <span class="text-sm font-medium">{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <!-- CTA -->
+          <a
+            href="#cta"
+            class="mt-8 block w-full py-3 bg-slate-100 text-navy rounded-xl font-bold text-center hover:bg-deep-blue hover:text-white transition-colors"
+          >
+            견적 문의
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,113 +1,40 @@
 ---
 /**
  * 랜딩 페이지 (/)
- * @TASK P1-S0-T3 테스트
+ * @TASK P2-S1-T11
  * @SPEC docs/planning/06-screens.md
+ *
+ * 10개 섹션 통합:
+ * - Hero, ValueProposition, Services, FreeLabeling
+ * - Process, TrackRecord, PainPoints, Differentiators
+ * - FAQ, CTA
  */
 
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/landing/Hero.astro';
+import ValueProposition from '../components/landing/ValueProposition.astro';
+import Services from '../components/landing/Services.astro';
+import FreeLabeling from '../components/landing/FreeLabeling.astro';
+import Process from '../components/landing/Process.astro';
+import TrackRecord from '../components/landing/TrackRecord.astro';
+import PainPoints from '../components/landing/PainPoints.astro';
+import Differentiators from '../components/landing/Differentiators.astro';
+import FAQ from '../components/landing/FAQ.astro';
+import CTA from '../components/landing/CTA.astro';
 ---
 
-<Layout title="새봄컨설팅 | AI 자동화로 빠르고 정확한 FDA 인증">
-  <!-- 히어로 섹션 테스트 (Phase 2에서 실제 컴포넌트로 교체 예정) -->
-  <section
-    id="hero"
-    class="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden"
-  >
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 tech-pattern opacity-30"></div>
-
-    <!-- Blur Effects -->
-    <div class="absolute top-1/4 -right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px]">
-    </div>
-    <div class="absolute bottom-1/4 -left-20 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px]">
-    </div>
-
-    <!-- Content -->
-    <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
-      <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-        AI로 더 빠르게,<br />관세사로 더 정확하게
-      </h1>
-      <p class="text-xl md:text-2xl text-white/80 mb-8 leading-relaxed max-w-3xl mx-auto">
-        해외 수출 인증·허가, 이제 합리적인 비용으로 시작하세요.<br />
-        FDA, EU, 일본 인증부터 통관까지 원스톱 지원
-      </p>
-
-      <!-- CTA Buttons -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-        <a
-          href="#cta"
-          class="px-10 py-5 bg-deep-blue text-white rounded-xl font-bold text-lg hover:bg-navy transition-all shadow-xl shadow-blue-900/20"
-        >
-          무료 견적 받기
-        </a>
-        <a
-          href="#services"
-          class="px-10 py-5 bg-white text-navy rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all"
-        >
-          서비스 보기
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 서비스 섹션 (임시 플레이스홀더) -->
-  <section id="services" class="py-24">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-sm font-bold text-deep-blue uppercase tracking-widest mb-3">Our Services</h2>
-      <h3 class="text-4xl font-bold text-navy mb-8">우리의 서비스</h3>
-      <p class="text-slate-600">Phase 2에서 구현 예정</p>
-    </div>
-  </section>
-
-  <!-- FDA 섹션 (임시 플레이스홀더) -->
-  <section id="fda" class="py-24 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-sm font-bold text-deep-blue uppercase tracking-widest mb-3">FDA Certification</h2>
-      <h3 class="text-4xl font-bold text-navy mb-8">FDA 인증</h3>
-      <p class="text-slate-600">Phase 2에서 구현 예정</p>
-    </div>
-  </section>
-
-  <!-- EU 섹션 (임시 플레이스홀더) -->
-  <section id="eu" class="py-24">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-sm font-bold text-deep-blue uppercase tracking-widest mb-3">EU Customs</h2>
-      <h3 class="text-4xl font-bold text-navy mb-8">EU 통관</h3>
-      <p class="text-slate-600">Phase 2에서 구현 예정</p>
-    </div>
-  </section>
-
-  <!-- 일본 섹션 (임시 플레이스홀더) -->
-  <section id="japan" class="py-24 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-sm font-bold text-deep-blue uppercase tracking-widest mb-3">Japan Certification</h2>
-      <h3 class="text-4xl font-bold text-navy mb-8">일본 인증</h3>
-      <p class="text-slate-600">Phase 2에서 구현 예정</p>
-    </div>
-  </section>
-
-  <!-- CTA 섹션 (임시 플레이스홀더) -->
-  <section id="cta" class="py-24 hero-gradient">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-4xl font-bold text-white mb-4">지금 바로 시작하세요</h2>
-      <p class="text-xl text-white/80 mb-8">24시간 내 맞춤 견적을 보내드립니다. 상담은 언제나 무료입니다.</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="mailto:newbom@newbom.co.kr"
-          class="px-10 py-5 bg-white text-navy rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all"
-        >
-          무료 견적 받기
-        </a>
-        <a
-          href="https://pf.kakao.com/xxxxx"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-10 py-5 bg-transparent border border-white/30 text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all"
-        >
-          카카오톡 상담하기
-        </a>
-      </div>
-    </div>
-  </section>
+<Layout
+  title="새봄컨설팅 | AI로 더 빠르게, 관세사로 더 정확하게"
+  description="FDA, EU, 일본 수출 인증·허가 전문. AI 자동화 + 전문 관세사 검토로 160만원부터 시작. 30일 내 처리, 통관까지 원스톱 지원."
+>
+  <Hero />
+  <ValueProposition />
+  <Services />
+  <FreeLabeling />
+  <Process />
+  <TrackRecord />
+  <PainPoints />
+  <Differentiators />
+  <FAQ />
+  <CTA />
 </Layout>

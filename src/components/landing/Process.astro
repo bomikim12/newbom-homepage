@@ -1,0 +1,107 @@
+---
+/**
+ * Process 섹션 (4단계 프로세스)
+ * @TASK P2-S1-T5
+ * @SPEC docs/planning/06-screens.md#1.6-프로세스-섹션
+ *
+ * 기능:
+ * - 섹션 헤더: "간단한 4단계 프로세스"
+ * - 4개 스텝 카드
+ * - 스텝 번호 + 연결선
+ */
+
+const steps = [
+  {
+    number: '01',
+    icon: 'chat',
+    title: '문의 및 상담',
+    description: '제품 정보와 수출 계획을 알려주세요. 24시간 내 맞춤 견적을 드립니다.',
+  },
+  {
+    number: '02',
+    icon: 'folder_open',
+    title: '계약 및 자료 제출',
+    description: '필요한 서류와 원재료 정보를 제출하시면 AI가 1차 문서를 자동 생성합니다.',
+  },
+  {
+    number: '03',
+    icon: 'fact_check',
+    title: '관세사 검토 및 승인',
+    description: '관세사가 직접 검토하고 수정합니다. 법적 효력이 있는 정식 서류로 완성됩니다.',
+  },
+  {
+    number: '04',
+    icon: 'local_shipping',
+    title: '제출 및 통관 지원',
+    description: '현지 파트너와 협력하여 신속 처리. 국내 수출통관까지 원스톱 지원합니다.',
+  },
+];
+---
+
+<section id="process" class="py-20 md:py-24 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16 md:mb-20">
+      <h2 class="text-sm font-bold text-deep-blue uppercase tracking-widest mb-3">
+        How It Works
+      </h2>
+      <h3 class="text-3xl md:text-4xl font-bold text-navy">
+        간단한 4단계 프로세스
+      </h3>
+      <p class="text-slate-600 mt-4 max-w-2xl mx-auto">
+        복잡한 해외 인증, 새봄컨설팅이 쉽게 만들어 드립니다
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-4 relative">
+      <!-- Connection Line (Desktop) -->
+      <div class="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-0.5 bg-slate-200"></div>
+
+      {steps.map((step, index) => (
+        <div class="relative">
+          <!-- Step Card -->
+          <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow text-center">
+            <!-- Step Number -->
+            <div class="w-12 h-12 mx-auto bg-deep-blue text-white rounded-full flex items-center justify-center font-bold text-lg mb-6 relative z-10">
+              {step.number}
+            </div>
+
+            <!-- Icon -->
+            <div class="w-14 h-14 mx-auto bg-slate-50 rounded-2xl flex items-center justify-center text-deep-blue mb-5">
+              <span class="material-symbols-outlined text-2xl">{step.icon}</span>
+            </div>
+
+            <!-- Title -->
+            <h4 class="text-lg font-bold text-navy mb-3">
+              {step.title}
+            </h4>
+
+            <!-- Description -->
+            <p class="text-sm text-slate-600 leading-relaxed">
+              {step.description}
+            </p>
+          </div>
+
+          <!-- Arrow (Mobile) -->
+          {index < steps.length - 1 && (
+            <div class="flex justify-center my-4 lg:hidden">
+              <span class="material-symbols-outlined text-slate-300 text-2xl">arrow_downward</span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-12 md:mt-16">
+      <a
+        href="#cta"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-deep-blue text-white rounded-xl font-bold text-lg hover:bg-navy transition-colors"
+      >
+        <span class="material-symbols-outlined">rocket_launch</span>
+        지금 시작하기
+      </a>
+    </div>
+  </div>
+</section>
