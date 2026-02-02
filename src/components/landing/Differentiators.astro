@@ -1,0 +1,101 @@
+---
+/**
+ * Differentiators 섹션 (차별점 상세)
+ * @TASK P2-S1-T8
+ * @SPEC docs/planning/06-screens.md#1.9-차별점-상세-섹션
+ *
+ * 기능:
+ * - 섹션 헤더: "새봄컨설팅이 다른 이유"
+ * - 3개 차별점 카드
+ */
+
+const differentiators = [
+  {
+    number: '01',
+    icon: 'workspace_premium',
+    title: '관세사만의 전문성',
+    description: '일반 컨설팅 업체와 달리, 관세사 자격을 가진 전문가가 직접 검토합니다.',
+    features: [
+      '11년 관세사 실무 경력',
+      '전문가배상책임보험 가입',
+      '법적 효력이 있는 정식 서류',
+      '수입국 현지 규정 완벽 반영',
+    ],
+  },
+  {
+    number: '02',
+    icon: 'smart_toy',
+    title: 'AI 기술과 전문성의 결합',
+    description: 'AI의 속도와 관세사의 정확성을 결합하여 최적의 결과를 제공합니다.',
+    features: [
+      'AI가 1차 문서 자동 생성',
+      '관세사가 2차 검토 및 수정',
+      '기존 대비 50% 기간 단축',
+      '휴먼 에러 최소화',
+    ],
+  },
+  {
+    number: '03',
+    icon: 'hub',
+    title: '진짜 원스톱 서비스',
+    description: '인증·허가에서 끝나지 않고, 실제 통관까지 책임집니다.',
+    features: [
+      '인증·허가 서류 작성',
+      '국내 수출통관 대행',
+      '현지 수입통관 지원',
+      '문제 발생 시 즉각 대응',
+    ],
+  },
+];
+---
+
+<section id="differentiators" class="py-20 md:py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16 md:mb-20">
+      <h2 class="text-sm font-bold text-deep-blue uppercase tracking-widest mb-3">
+        Why Different
+      </h2>
+      <h3 class="text-3xl md:text-4xl font-bold text-navy">
+        새봄컨설팅이 다른 이유
+      </h3>
+    </div>
+
+    <!-- Differentiators -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+      {differentiators.map((item) => (
+        <div class="bg-slate-50 p-6 md:p-8 rounded-2xl hover:bg-blue-50 transition-colors group">
+          <!-- Number & Icon -->
+          <div class="flex items-center gap-4 mb-6">
+            <span class="text-4xl md:text-5xl font-extrabold text-slate-200 group-hover:text-blue-200 transition-colors">
+              {item.number}
+            </span>
+            <div class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-2xl flex items-center justify-center text-deep-blue shadow-sm group-hover:shadow-md transition-shadow">
+              <span class="material-symbols-outlined text-2xl md:text-3xl">{item.icon}</span>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <h4 class="text-xl md:text-2xl font-bold text-navy mb-3">
+            {item.title}
+          </h4>
+
+          <!-- Description -->
+          <p class="text-slate-600 mb-6 leading-relaxed text-sm md:text-base">
+            {item.description}
+          </p>
+
+          <!-- Features -->
+          <ul class="space-y-3">
+            {item.features.map((feature) => (
+              <li class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-green-500 text-lg">check</span>
+                <span class="text-sm text-slate-700">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
