@@ -1,0 +1,21 @@
+---
+/**
+ * 무료 라벨링 서비스 페이지 (/label)
+ * @TASK P3-S1-T5
+ * @SPEC docs/planning/06-screens.md#2
+ *
+ * React Island로 LabelAI 컴포넌트를 렌더링합니다.
+ */
+
+import Layout from '../layouts/Layout.astro';
+import LabelAI from '../components/label-ai/LabelAI';
+---
+
+<Layout
+  title="무료 라벨링 서비스 | 새봄컨설팅"
+  description="EU/US 규정에 맞는 식품 라벨 초안을 무료로 생성하세요. 원재료와 영양정보 입력만으로 14대 알러젠 자동 감지, 나트륨-소금 변환까지."
+  hideHeader={false}
+  hideFooter={false}
+>
+  <LabelAI client:load />
+</Layout>
