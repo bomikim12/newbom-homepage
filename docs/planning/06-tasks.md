@@ -200,7 +200,7 @@ flowchart TD
 > 총 섹션: 10개 + Header + Footer
 > 디자인 참고: insightflo-homepage 섹션 구조
 
-### [ ] P2-S1-T1: Hero 섹션
+### [x] P2-S1-T1: Hero 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P1-S0-T3
@@ -221,7 +221,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T2: Value Proposition 섹션
+### [x] P2-S1-T2: Value Proposition 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1
@@ -244,7 +244,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T3: Services 섹션
+### [x] P2-S1-T3: Services 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1
@@ -266,7 +266,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T4: Free Labeling 섹션
+### [x] P2-S1-T4: Free Labeling 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1
@@ -286,7 +286,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T5: Process 섹션
+### [x] P2-S1-T5: Process 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1
@@ -309,7 +309,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T6: Track Record 섹션
+### [x] P2-S1-T6: Track Record 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1
@@ -327,7 +327,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T7: Pain Points 섹션
+### [x] P2-S1-T7: Pain Points 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1
@@ -348,7 +348,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T8: Differentiators 섹션
+### [x] P2-S1-T8: Differentiators 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1
@@ -367,7 +367,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T9: FAQ 섹션
+### [x] P2-S1-T9: FAQ 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1
@@ -385,7 +385,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T10: CTA 섹션
+### [x] P2-S1-T10: CTA 섹션
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1
@@ -406,7 +406,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-T11: 랜딩 페이지 통합
+### [x] P2-S1-T11: 랜딩 페이지 통합
 
 - **담당**: frontend-specialist
 - **의존**: P2-S1-T1 ~ P2-S1-T10
@@ -424,7 +424,7 @@ flowchart TD
 
 ---
 
-### [ ] P2-S1-V: 랜딩 페이지 검증
+### [x] P2-S1-V: 랜딩 페이지 검증
 
 - **담당**: test-specialist
 - **의존**: P2-S1-T11
