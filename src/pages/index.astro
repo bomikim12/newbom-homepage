@@ -1,17 +1,53 @@
 ---
+// @TASK P0-T0.2 - Homepage with Design System
+// @SPEC docs/planning/05-design-system.md
 
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="새봄컨설팅 | AI 자동화로 빠르고 정확한 FDA 인증">
+  <!-- 히어로 섹션 테스트 -->
+  <section
+    class="relative min-h-screen flex items-center justify-center hero-gradient pt-20 overflow-hidden"
+  >
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 tech-pattern opacity-30"></div>
+
+    <!-- Blur Effects -->
+    <div class="absolute top-1/4 -right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px]">
+    </div>
+    <div class="absolute bottom-1/4 -left-20 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px]">
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+      <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
+        디자인 시스템 적용 완료
+      </h1>
+      <p class="text-xl md:text-2xl text-white/80 mb-8 leading-relaxed max-w-3xl mx-auto">
+        Navy-Blue 컬러 팔레트, Pretendard 폰트, Material Symbols 아이콘이 준비되었습니다.
+      </p>
+
+      <!-- 컬러 팔레트 테스트 -->
+      <div class="flex gap-4 justify-center mt-12">
+        <div class="w-24 h-24 bg-navy rounded-2xl flex items-center justify-center">
+          <span class="text-white text-xs font-bold">Navy</span>
+        </div>
+        <div class="w-24 h-24 bg-deep-blue rounded-2xl flex items-center justify-center">
+          <span class="text-white text-xs font-bold">Deep Blue</span>
+        </div>
+        <div class="w-24 h-24 bg-accent-blue rounded-2xl flex items-center justify-center">
+          <span class="text-white text-xs font-bold">Accent</span>
+        </div>
+      </div>
+
+      <!-- 아이콘 테스트 -->
+      <div class="flex gap-6 justify-center mt-8 text-white">
+        <span class="material-symbols-outlined text-4xl">verified</span>
+        <span class="material-symbols-outlined text-4xl">speed</span>
+        <span class="material-symbols-outlined text-4xl">savings</span>
+        <span class="material-symbols-outlined text-4xl">check_circle</span>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

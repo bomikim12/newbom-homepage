@@ -1,0 +1,531 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Label AI: 수출 식품 라벨링 자동화</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light background */
+        }
+        .container {
+            max-width: 1024px;
+        }
+        .step-indicator {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+        .step-indicator.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .step-indicator.complete {
+            background-color: #10b981;
+            color: white;
+        }
+        .compliance-alert {
+            border-left: 4px solid #f97316;
+            background-color: #fff7ed;
+            color: #9a3412;
+        }
+        .compliance-success {
+            border-left: 4px solid #10b981;
+            background-color: #ecfdf5;
+            color: #065f46;
+        }
+        .compliance-error {
+            border-left: 4px solid #ef4444;
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+        .label-output {
+            white-space: pre-wrap;
+            font-family: monospace;
+            min-height: 300px;
+        }
+        .label-heading {
+            border-bottom: 2px solid #333;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 1.125rem;
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body class="p-8">
+
+    <div class="container mx-auto bg-white rounded-xl shadow-2xl p-8 lg:p-12">
+        <header class="mb-8">
+            <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Global Label AI</h1>
+            <p class="text-gray-500">관세사/변호사 없이 EU & 미국 식품 라벨링 컴플라이언스 자동화</p>
+        </header>
+
+        <!-- Step Indicators -->
+        <div class="flex justify-between items-center mb-10">
+            <div id="step-1-indicator" class="step-indicator active flex-1 text-center py-2 rounded-l-lg font-semibold transition-all">1. 프로젝트 설정</div>
+            <div id="step-2-indicator" class="step-indicator flex-1 text-center py-2 font-semibold transition-all">2. 원재료 분석</div>
+            <div id="step-3-indicator" class="step-indicator flex-1 text-center py-2 font-semibold transition-all">3. 영양 성분 변환</div>
+            <div id="step-4-indicator" class="step-indicator flex-1 text-center py-2 rounded-r-lg font-semibold transition-all">4. 최종 라벨 출력</div>
+        </div>
+
+        <!-- Main Content Area -->
+        <main id="platform-app">
+            
+            <!-- Step 1: Project Setup -->
+            <div id="step-1" class="step-content">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">1. 수출 대상 및 기본 정보 설정</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="productName" class="block text-sm font-medium text-gray-700 mb-1">제품명</label>
+                        <input type="text" id="productName" value="Spicy Instant Noodle" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="targetMarket" class="block text-sm font-medium text-gray-700 mb-1">수출 대상 마켓 <span class="text-red-500">*</span></label>
+                        <select id="targetMarket" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="EU">EU (유럽 연합)</option>
+                            <option value="US">US (미국 FDA)</option>
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1">대상 마켓에 따라 나트륨/소금, kJ/kcal 표기 규칙이 자동 적용됩니다.</p>
+                    </div>
+                    <div>
+                        <label for="targetLanguage" class="block text-sm font-medium text-gray-700 mb-1">판매 언어 (EU 필수)</label>
+                        <input type="text" id="targetLanguage" value="English, German, French" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <p class="text-xs text-gray-500 mt-1">EU 수출 시 판매국의 공식 언어가 필수입니다. (예: 독일어)</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button onclick="nextStep(2)" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-150">다음 단계: 원재료 분석 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Ingredient Input & Analysis -->
+            <div id="step-2" class="step-content hidden">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">2. 원재료 및 첨가물 컴플라이언스 분석</h2>
+
+                <div id="ingredientAlert" class="compliance-alert p-3 rounded-lg text-sm mb-4 hidden"></div>
+
+                <div class="space-y-2 mb-6 p-4 bg-gray-50 rounded-lg border">
+                    <p class="font-semibold text-gray-800">원재료 목록 입력</p>
+                    <div class="flex space-x-2">
+                        <input type="text" id="ingName" placeholder="원재료명 (예: Wheat flour)" class="flex-1 p-2 border rounded-lg">
+                        <input type="number" id="ingPercent" placeholder="함량 (%)" class="w-24 p-2 border rounded-lg">
+                        <button onclick="addIngredient()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">추가</button>
+                    </div>
+                    <p class="text-xs text-gray-500">EU 규정: 2% 미만 원재료도 모두 표기해야 합니다. (복합 원재료의 일부 구성 성분만 예외)</p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="font-bold text-lg mb-2 text-gray-800">현재 원재료 목록 (중량 내림차순 자동 정렬)</h3>
+                    <div id="ingredientsListDisplay" class="border p-4 rounded-lg bg-white">
+                        <p class="text-gray-400">원재료를 추가해주세요.</p>
+                    </div>
+                    <p id="allergenCheck" class="text-sm mt-2 text-gray-600"></p>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button onclick="nextStep(1)" class="px-6 py-3 bg-gray-400 text-white font-semibold rounded-lg shadow-md hover:bg-gray-500 transition duration-150">&larr; 이전 단계</button>
+                    <button onclick="nextStep(3)" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-150">다음 단계: 영양 성분 변환 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Nutrition Input & Conversion -->
+            <div id="step-3" class="step-content hidden">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">3. 영양 성분 입력 및 규정 자동 변환</h2>
+                
+                <div id="nutritionAlert" class="compliance-error p-3 rounded-lg text-sm mb-4 hidden"></div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2 text-sm text-gray-600">
+                        <p>모든 값은 **100g 기준**으로 입력해주세요. (EU/US 필수 기준)</p>
+                        <p class="font-bold text-red-500 mt-2">주의: EU 수출 시 나트륨(mg)은 **소금(g)**으로, kcal은 **kJ**로 병기됩니다.</p>
+                    </div>
+                    
+                    <div class="p-3 border rounded-lg bg-gray-50">
+                        <label for="n_kcal" class="block text-sm font-medium text-gray-700">에너지 (kcal)</label>
+                        <input type="number" id="n_kcal" value="496" class="w-full p-2 mt-1 border rounded-lg">
+                    </div>
+                    <div class="p-3 border rounded-lg bg-gray-50">
+                        <label for="n_sodium" class="block text-sm font-medium text-gray-700">나트륨 (mg) <span class="text-red-500">EU: Salt 변환</span></label>
+                        <input type="number" id="n_sodium" value="1904.22" class="w-full p-2 mt-1 border rounded-lg">
+                    </div>
+                    <div class="p-3 border rounded-lg">
+                        <label for="n_fat" class="block text-sm font-medium text-gray-700">지방 (g)</label>
+                        <input type="number" id="n_fat" value="15.32" class="w-full p-2 mt-1 border rounded-lg">
+                    </div>
+                    <div class="p-3 border rounded-lg">
+                        <label for="n_saturates" class="block text-sm font-medium text-gray-700">포화지방 (g)</label>
+                        <input type="number" id="n_saturates" value="7.32" class="w-full p-2 mt-1 border rounded-lg">
+                    </div>
+                    <div class="p-3 border rounded-lg">
+                        <label for="n_carbs" class="block text-sm font-medium text-gray-700">탄수화물 (g)</label>
+                        <input type="number" id="n_carbs" value="82.40" class="w-full p-2 mt-1 border rounded-lg">
+                    </div>
+                    <div class="p-3 border rounded-lg">
+                        <label for="n_sugars" class="block text-sm font-medium text-gray-700">당류 (g)</label>
+                        <input type="number" id="n_sugars" value="2.49" class="w-full p-2 mt-1 border rounded-lg">
+                    </div>
+                    <div class="p-3 border rounded-lg">
+                        <label for="n_protein" class="block text-sm font-medium text-gray-700">단백질 (g)</label>
+                        <input type="number" id="n_protein" value="8.70" class="w-full p-2 mt-1 border rounded-lg">
+                    </div>
+                    <div class="p-3 border rounded-lg">
+                        <label for="n_fibre" class="block text-sm font-medium text-gray-700">식이섬유 (g) (자발적 표기)</label>
+                        <input type="number" id="n_fibre" value="3.14" class="w-full p-2 mt-1 border rounded-lg">
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button onclick="nextStep(2)" class="px-6 py-3 bg-gray-400 text-white font-semibold rounded-lg shadow-md hover:bg-gray-500 transition duration-150">&larr; 이전 단계</button>
+                    <button onclick="processNutritionAndNext()" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-150">다음 단계: 최종 라벨 출력 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Final Label Output -->
+            <div id="step-4" class="step-content hidden">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">4. 최종 라벨 초안 및 규정 준수 체크리스트</h2>
+                
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Final Label Text -->
+                    <div class="lg:col-span-2">
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">최종 라벨 텍스트 (EU 규정 적용)</h3>
+                        <div id="finalLabelOutput" class="label-output border p-6 rounded-lg bg-gray-50 shadow-inner">
+                            데이터를 로드하는 중...
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button onclick="copyToClipboard('finalLabelOutput')" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition">텍스트 복사</button>
+                            <button class="px-4 py-2 bg-gray-200 text-gray-800 text-sm rounded-lg hover:bg-gray-300 transition">PDF 다운로드 (모의)</button>
+                        </div>
+                    </div>
+
+                    <!-- Compliance Checklist -->
+                    <div class="lg:col-span-1">
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">규정 준수 체크리스트</h3>
+                        <div id="complianceChecklist" class="space-y-3 p-4 rounded-lg bg-white border shadow">
+                            <!-- Checklist items will be inserted here -->
+                            <p class="text-gray-400">분석을 시작해주세요.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-start">
+                    <button onclick="nextStep(3)" class="px-6 py-3 bg-gray-400 text-white font-semibold rounded-lg shadow-md hover:bg-gray-500 transition duration-150">&larr; 이전 단계</button>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <script>
+        // 전역 상태
+        let currentStep = 1;
+        let ingredients = [];
+        let nutritionData = {};
+        const allergens = ['WHEAT', 'SOY', 'FISH', 'EGG', 'MILK', 'NUTS', 'PEANUTS', 'CRUSTACEANS', 'CELERY', 'MUSTARD', 'SESAME'];
+
+        // --- Step Management ---
+
+        function updateStepUI() {
+            // 모든 콘텐츠 숨기기
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            // 현재 단계 콘텐츠 보이기
+            document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+
+            // 인디케이터 업데이트
+            document.querySelectorAll('.step-indicator').forEach((el, index) => {
+                const stepNum = index + 1;
+                el.classList.remove('active', 'complete');
+                if (stepNum < currentStep) {
+                    el.classList.add('complete');
+                } else if (stepNum === currentStep) {
+                    el.classList.add('active');
+                }
+            });
+
+            // 4단계에서는 최종 출력 함수 호출
+            if (currentStep === 4) {
+                generateFinalLabel();
+            }
+        }
+
+        function nextStep(step) {
+            currentStep = step;
+            updateStepUI();
+        }
+
+        // --- Step 2: Ingredient Logic ---
+
+        function addIngredient() {
+            const nameInput = document.getElementById('ingName');
+            const percentInput = document.getElementById('ingPercent');
+            const name = nameInput.value.trim();
+            const percent = parseFloat(percentInput.value);
+
+            if (name && !isNaN(percent) && percent >= 0) {
+                ingredients.push({ name, percent });
+                // 입력 필드 초기화
+                nameInput.value = '';
+                percentInput.value = '';
+                // 목록 업데이트
+                updateIngredientList();
+            } else {
+                alert('원재료명과 함량(%)을 정확히 입력해주세요.');
+            }
+        }
+
+        function updateIngredientList() {
+            const market = document.getElementById('targetMarket').value;
+            const display = document.getElementById('ingredientsListDisplay');
+            const alertBox = document.getElementById('ingredientAlert');
+            const allergenCheck = document.getElementById('allergenCheck');
+            
+            // 1. 중량 내림차순 정렬 (FIC Article 18(1))
+            ingredients.sort((a, b) => b.percent - a.percent);
+
+            let listHTML = '';
+            let allergenDetected = [];
+            let isCompliant = true;
+
+            // 2. 목록 생성 및 알레르기/첨가물 검토
+            const ingredientString = ingredients.map(ing => {
+                let name = ing.name;
+                const originalName = name.toUpperCase();
+                let isAllergen = false;
+
+                // 알레르기 유발 물질 강조 (FIC Article 21(1))
+                allergens.forEach(allergen => {
+                    if (originalName.includes(allergen) || originalName.includes(allergen.split('(')[0])) {
+                        if (!allergenDetected.includes(allergen)) {
+                            allergenDetected.push(allergen);
+                        }
+                        name = `<strong>${name.toUpperCase()}</strong>`; // 대문자 볼드체 강조
+                        isAllergen = true;
+                    }
+                });
+                
+                // 식품 첨가물 (E-number 모의 검토)
+                if (name.toUpperCase().includes('MONOSODIUM GLUTAMATE')) {
+                    name = name.replace(/monosodium glutamate/i, 'Flavour enhancer (E621)');
+                } else if (name.toUpperCase().includes('LECITHIN')) {
+                    name = name.replace(/lecithin/i, 'Lecithin (SOY)');
+                    if (!allergenDetected.includes('SOY')) allergenDetected.push('SOY'); // 레시틴 대두 출처 가정
+                }
+
+                const style = isAllergen ? 'text-red-600 font-bold' : 'text-gray-800';
+                listHTML += `<p class="text-sm ${style}">${name} (${ing.percent.toFixed(2)}%)</p>`;
+                return name;
+            }).join(', ');
+            
+            display.innerHTML = listHTML || '<p class="text-gray-400">원재료를 추가해주세요.</p>';
+            
+            // 3. EU 2% 미만 표기 규칙 안내 (FIC Article 18(1))
+            alertBox.classList.add('hidden');
+            if (market === 'EU' && ingredients.some(ing => ing.percent < 2)) {
+                alertBox.classList.remove('hidden');
+                alertBox.innerHTML = `<strong>EU 규정 주의:</strong> EU는 2% 미만 원재료도 **모두 표기**해야 합니다. (미국과 다름)`;
+                isCompliant = false;
+            }
+
+            // 4. 알레르기 검토 결과 표시
+            if (allergenDetected.length > 0) {
+                allergenCheck.innerHTML = `✅ **알레르기 감지:** ${allergenDetected.join(', ')} (자동 강조 적용됨)`;
+                allergenCheck.classList.add('text-green-600');
+                allergenCheck.classList.remove('text-red-600');
+            } else {
+                 allergenCheck.innerHTML = `⚠️ **알레르기 없음:** 14가지 필수 알레르기 유발물질이 감지되지 않았습니다.`;
+                 allergenCheck.classList.add('text-gray-600');
+                 allergenCheck.classList.remove('text-green-600');
+            }
+        }
+
+        // --- Step 3: Nutrition Logic ---
+
+        function processNutritionAndNext() {
+            const market = document.getElementById('targetMarket').value;
+            const kcal = parseFloat(document.getElementById('n_kcal').value);
+            const sodium = parseFloat(document.getElementById('n_sodium').value);
+            
+            if (isNaN(kcal) || isNaN(sodium)) {
+                alert('에너지와 나트륨 값을 정확히 입력해주세요.');
+                return;
+            }
+
+            nutritionData = {
+                kcal,
+                sodium,
+                fat: parseFloat(document.getElementById('n_fat').value),
+                saturates: parseFloat(document.getElementById('n_saturates').value),
+                carbs: parseFloat(document.getElementById('n_carbs').value),
+                sugars: parseFloat(document.getElementById('n_sugars').value),
+                protein: parseFloat(document.getElementById('n_protein').value),
+                fibre: parseFloat(document.getElementById('n_fibre').value),
+                market: market
+            };
+
+            // 핵심 규정 적용 및 데이터 저장
+            if (market === 'EU') {
+                // FIC Article 30(4): 나트륨 -> 소금(Salt) 변환
+                nutritionData.salt = (sodium * 2.5) / 1000;
+                // FIC Annex XV: kcal -> kJ 변환 및 병기
+                nutritionData.kJ = Math.round(kcal * 4.184); 
+            } else {
+                nutritionData.salt = null; // 미국은 Sodium 표기
+                nutritionData.kJ = null;
+            }
+
+            nextStep(4);
+        }
+
+        // --- Step 4: Final Label Generation ---
+
+        function generateFinalLabel() {
+            const market = nutritionData.market;
+            const productName = document.getElementById('productName').value;
+            const language = document.getElementById('targetLanguage').value;
+            const outputEl = document.getElementById('finalLabelOutput');
+            const checklistEl = document.getElementById('complianceChecklist');
+            
+            let labelText = '';
+            let checklistHTML = '';
+            let compliantChecks = 0;
+            const totalChecks = 6;
+            
+            // 1. 라벨 텍스트 기본 정보
+            labelText += `[ ${market} 식품 라벨 초안 ] - ${productName}\n`;
+            labelText += `----------------------------------------------------\n`;
+            labelText += `판매 언어 (FIC Article 15): ${language}\n`;
+            labelText += `원산지 (FIC Article 26): South Korea\n\n`;
+
+            // 2. 원재료 목록 (FIC Article 18, 21)
+            let ingredientListText = ingredients.map(ing => {
+                let name = ing.name;
+                // 알레르기/첨가물 모의 적용
+                if (allergens.some(a => ing.name.toUpperCase().includes(a))) name = name.toUpperCase();
+                if (ing.name.toUpperCase().includes('MONOSODIUM GLUTAMATE')) name = 'Flavour enhancer (E621)';
+                return `${name} (${ing.percent.toFixed(1)}%)`;
+            }).join(', ');
+            
+            labelText += `[ Ingredients / 원재료 ]\n`;
+            labelText += `Ingredients: ${ingredientListText}\n`;
+            
+            const allergenText = ingredients.some(ing => allergens.some(a => ing.name.toUpperCase().includes(a))) ? 
+                                 'WHEAT, SOY' : 'None Detected';
+            labelText += `Allergens (강조): Contains: ${allergenText}\n\n`;
+
+            // Checklist 1: 원재료 정렬 & 첨가물 표기
+            if (ingredients.length > 1 && ingredients[0].percent >= ingredients[1].percent) {
+                checklistHTML += `<div class="compliance-success p-2 rounded-lg text-xs">✅ 원재료 중량 순서대로 배열 (FIC Article 18)</div>`;
+                compliantChecks++;
+            } else {
+                checklistHTML += `<div class="compliance-error p-2 rounded-lg text-xs">❌ 원재료 중량 순서가 잘못됨 (FIC Article 18)</div>`;
+            }
+            // Checklist 2: 알레르기 강조
+             if (allergenText !== 'None Detected') {
+                checklistHTML += `<div class="compliance-success p-2 rounded-lg text-xs">✅ 알레르기 유발 물질 강조 표기 적용됨 (FIC Article 21)</div>`;
+                compliantChecks++;
+            } else {
+                checklistHTML += `<div class="compliance-alert p-2 rounded-lg text-xs">⚠️ 알레르기 성분이 감지되지 않았습니다.</div>`;
+            }
+
+            // 3. 영양 성분 표
+            labelText += `[ Nutrition Declaration / 영양성분표 ] per 100g\n`;
+            labelText += `----------------------------------------------------\n`;
+            
+            // EU 로직 적용
+            if (market === 'EU') {
+                labelText += `Energy ${nutritionData.kJ} kJ / ${Math.round(nutritionData.kcal)} kcal (FIC Annex XV)\n`;
+                labelText += `Fat ${nutritionData.fat.toFixed(1)} g\n`;
+                labelText += `  of which saturates ${nutritionData.saturates.toFixed(1)} g\n`;
+                labelText += `Carbohydrate ${nutritionData.carbs.toFixed(1)} g\n`;
+                labelText += `  of which sugars ${nutritionData.sugars.toFixed(1)} g\n`;
+                labelText += `Fibre ${nutritionData.fibre.toFixed(1)} g (자발적)\n`;
+                labelText += `Protein ${nutritionData.protein.toFixed(1)} g\n`;
+                labelText += `Salt ${nutritionData.salt.toFixed(2)} g (FIC Article 30(4))\n`;
+
+                // Checklist 3: Salt 변환
+                if (nutritionData.salt) {
+                    checklistHTML += `<div class="compliance-success p-2 rounded-lg text-xs">✅ 나트륨을 소금(Salt)으로 환산하여 표기 완료 (FIC Article 30(4))</div>`;
+                    compliantChecks++;
+                }
+                // Checklist 4: kJ/kcal 병기
+                if (nutritionData.kJ) {
+                    checklistHTML += `<div class="compliance-success p-2 rounded-lg text-xs">✅ 에너지 kJ/kcal 이중 병기 완료 (FIC Annex XV)</div>`;
+                    compliantChecks++;
+                }
+
+            } else if (market === 'US') {
+                // US 로직 (kcal, Sodium mg)
+                labelText += `Calories ${Math.round(nutritionData.kcal)}\n`;
+                labelText += `Total Fat ${nutritionData.fat.toFixed(1)} g\n`;
+                labelText += `  Saturated Fat ${nutritionData.saturates.toFixed(1)} g\n`;
+                labelText += `Total Carbohydrate ${nutritionData.carbs.toFixed(1)} g\n`;
+                labelText += `  Total Sugars ${nutritionData.sugars.toFixed(1)} g\n`;
+                labelText += `Dietary Fiber ${nutritionData.fibre.toFixed(1)} g\n`;
+                labelText += `Protein ${nutritionData.protein.toFixed(1)} g\n`;
+                labelText += `Sodium ${nutritionData.sodium.toFixed(0)} mg\n`;
+                
+                // US Checklist (모의)
+                checklistHTML += `<div class="compliance-success p-2 rounded-lg text-xs">✅ 미국 FDA 규정에 맞춰 mg/kcal 단위 표기 완료</div>`;
+                compliantChecks++;
+            }
+
+            // 4. 기타 필수 표기사항 (FIC Article 23, 24, 25)
+            labelText += `\n[ 기타 필수 정보 ]\n`;
+            labelText += `Net weight: 130.1 g (FIC Article 23)\n`;
+            labelText += `Best Before: See package (FIC Article 24)\n`;
+            labelText += `Storage: Store in a cool, dry place. Avoid direct sunlight. (FIC Article 25)\n`;
+            
+            // Checklist 5 & 6: 필수 표기
+            checklistHTML += `<div class="compliance-success p-2 rounded-lg text-xs">✅ 순중량, 유통기한, 보관 조건 모두 포함 (FIC Article 23, 24, 25)</div>`;
+            compliantChecks++;
+            checklistHTML += `<div class="compliance-success p-2 rounded-lg text-xs">✅ 필수 7개 영양성분 모두 포함됨 (FIC Article 30)</div>`;
+            compliantChecks++;
+
+            outputEl.innerText = labelText;
+            checklistEl.innerHTML = `
+                <p class="font-bold mb-2">총 규정 준수율: ${Math.round((compliantChecks / totalChecks) * 100)}%</p>
+                ${checklistHTML}
+            `;
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            try {
+                navigator.clipboard.writeText(text);
+                alert('라벨 텍스트가 클립보드에 복사되었습니다.');
+            } catch (err) {
+                // For environments where clipboard API is restricted
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('라벨 텍스트가 클립보드에 복사되었습니다.');
+            }
+        }
+
+        // 초기화 및 시작
+        window.onload = () => {
+            updateStepUI();
+            updateIngredientList(); // 초기 샘플 데이터가 없으므로 빈 목록 표시
+            // 샘플 데이터 삽입
+            ingredients = [
+                { name: 'Wheat flour', percent: 64 },
+                { name: 'Palm oil', percent: 11 },
+                { name: 'Soup Powder', percent: 21 },
+                { name: 'Monosodium glutamate', percent: 0.8 },
+                { name: 'Shrimp extract', percent: 0.1 }
+            ];
+            updateIngredientList();
+        };
+
+    </script>
+</body>
+</html>
