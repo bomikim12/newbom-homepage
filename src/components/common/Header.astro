@@ -1,0 +1,135 @@
+---
+/**
+ * Header 컴포넌트
+ * @TASK P1-S0-T1
+ * @SPEC docs/planning/05-design-system.md, 06-screens.md
+ *
+ * 기능:
+ * - Fixed 헤더 (bg-white/90 backdrop-blur)
+ * - 로고: 새봄컨설팅 (eco 아이콘 + 텍스트)
+ * - 네비게이션: 서비스, FDA인증, EU통관, 일본인증, 무료라벨링
+ * - CTA: [무료 견적 받기] 버튼
+ * - 모바일: 햄버거 메뉴 + 드롭다운
+ */
+
+const navLinks = [
+  { href: '#services', label: '서비스' },
+  { href: '#fda', label: 'FDA인증' },
+  { href: '#eu', label: 'EU통관' },
+  { href: '#japan', label: '일본인증' },
+  { href: '/label', label: '무료라벨링', isExternal: true },
+];
+---
+
+<header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
+  <nav class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2">
+      <div class="w-10 h-10 bg-deep-blue rounded-lg flex items-center justify-center text-white">
+        <span class="material-symbols-outlined font-bold">eco</span>
+      </div>
+      <span class="text-xl font-bold tracking-tight text-navy">새봄컨설팅</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <div class="hidden md:flex items-center gap-8">
+      {navLinks.map((link) => (
+        link.isExternal ? (
+          <a
+            href={link.href}
+            class="text-sm font-semibold text-slate-600 hover:text-deep-blue transition-colors"
+          >
+            {link.label}
+          </a>
+        ) : (
+          <a
+            href={link.href}
+            class="text-sm font-semibold text-slate-600 hover:text-deep-blue transition-colors"
+          >
+            {link.label}
+          </a>
+        )
+      ))}
+      <a
+        href="#cta"
+        class="px-5 py-2.5 bg-deep-blue text-white rounded-lg text-sm font-bold hover:bg-navy transition-colors"
+      >
+        무료 견적 받기
+      </a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-button"
+      class="md:hidden p-2"
+      aria-label="메뉴 열기"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="material-symbols-outlined text-slate-600" id="menu-icon">menu</span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="md:hidden hidden bg-white border-t border-slate-100 px-6 py-4 space-y-2"
+  >
+    {navLinks.map((link) => (
+      <a
+        href={link.href}
+        class="block text-slate-600 font-semibold py-3 hover:text-deep-blue transition-colors"
+        data-mobile-link
+      >
+        {link.label}
+      </a>
+    ))}
+    <a
+      href="#cta"
+      class="block bg-deep-blue text-white rounded-lg px-5 py-3 text-center font-bold mt-4"
+      data-mobile-link
+    >
+      무료 견적 받기
+    </a>
+  </div>
+</header>
+
+<!-- Header height spacer -->
+<div class="h-20"></div>
+
+<script>
+  const btn = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  const links = document.querySelectorAll('[data-mobile-link]');
+
+  function toggleMenu() {
+    const isHidden = menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    btn?.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    btn?.setAttribute('aria-label', isHidden ? '메뉴 닫기' : '메뉴 열기');
+    if (menuIcon) {
+      menuIcon.textContent = isHidden ? 'close' : 'menu';
+    }
+  }
+
+  btn?.addEventListener('click', toggleMenu);
+
+  links.forEach((link) => {
+    link.addEventListener('click', () => {
+      menu?.classList.add('hidden');
+      btn?.setAttribute('aria-expanded', 'false');
+      btn?.setAttribute('aria-label', '메뉴 열기');
+      if (menuIcon) {
+        menuIcon.textContent = 'menu';
+      }
+    });
+  });
+
+  // Close menu on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu?.classList.contains('hidden')) {
+      toggleMenu();
+    }
+  });
+</script>

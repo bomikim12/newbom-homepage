@@ -1,0 +1,113 @@
+---
+/**
+ * Footer 컴포넌트
+ * @TASK P1-S0-T2
+ * @SPEC docs/planning/05-design-system.md, 06-screens.md
+ *
+ * 기능:
+ * - 회사 정보: 새봄컨설팅, 이메일
+ * - 서비스 링크: FDA인증, EU통관, 일본인증
+ * - 법적 고지: 관세사 자격 보유 안내
+ * - 저작권: 동적 연도
+ */
+
+import { COMPANY_EMAIL, KAKAO_CHANNEL_URL } from '../../lib/constants';
+
+const currentYear = new Date().getFullYear();
+
+const serviceLinks = [
+  { href: '#fda', label: 'FDA 인증' },
+  { href: '#eu', label: 'EU 통관' },
+  { href: '#japan', label: '일본 인증' },
+  { href: '/label', label: '무료 라벨링' },
+];
+
+const contactLinks = [
+  { href: `mailto:${COMPANY_EMAIL}`, label: '이메일 문의', icon: 'mail' },
+  { href: KAKAO_CHANNEL_URL, label: '카카오톡 상담', icon: 'chat', external: true },
+];
+---
+
+<footer class="py-16 bg-slate-50 border-t border-slate-200">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Top Section -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+      <!-- Company Info -->
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-8 h-8 bg-slate-400 rounded-lg flex items-center justify-center text-white">
+            <span class="material-symbols-outlined text-sm">eco</span>
+          </div>
+          <span class="text-lg font-bold tracking-tight text-slate-500">새봄컨설팅</span>
+        </div>
+        <p class="text-sm text-slate-500 leading-relaxed mb-4">
+          AI 인증허가 신청서 자동화 + 전문 관세사 검토로<br />
+          해외 수출 인증·허가를 합리적인 비용으로 도와드립니다.
+        </p>
+        <div class="flex gap-4">
+          {contactLinks.map((link) => (
+            <a
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+              class="flex items-center gap-2 text-sm text-slate-500 hover:text-deep-blue transition-colors"
+            >
+              <span class="material-symbols-outlined text-lg">{link.icon}</span>
+              <span>{link.label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <h4 class="text-sm font-bold text-slate-800 mb-4">서비스</h4>
+        <ul class="space-y-3">
+          {serviceLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-sm text-slate-500 hover:text-deep-blue transition-colors"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 class="text-sm font-bold text-slate-800 mb-4">연락처</h4>
+        <ul class="space-y-3">
+          <li>
+            <a
+              href={`mailto:${COMPANY_EMAIL}`}
+              class="text-sm text-slate-500 hover:text-deep-blue transition-colors"
+            >
+              {COMPANY_EMAIL}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Legal Notice -->
+    <div class="py-6 border-t border-slate-200">
+      <p class="text-xs text-slate-400 leading-relaxed">
+        새봄컨설팅은 관세사 자격을 보유한 전문가가 운영하며, 전문가배상책임보험에 가입되어 있습니다.
+        모든 인증·허가 서류는 전문 관세사의 검토를 거쳐 법적 효력이 보장됩니다.
+      </p>
+    </div>
+
+    <!-- Copyright -->
+    <div class="pt-6 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-sm text-slate-400">
+        &copy; {currentYear} 새봄컨설팅. All rights reserved.
+      </p>
+      <p class="text-xs text-slate-400">
+        사업자등록번호: 000-00-00000
+      </p>
+    </div>
+  </div>
+</footer>

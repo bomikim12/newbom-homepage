@@ -1,0 +1,91 @@
+---
+/**
+ * Layout 컴포넌트 (Header + Footer 통합)
+ * @TASK P1-S0-T3
+ * @SPEC docs/planning/05-design-system.md
+ *
+ * 기능:
+ * - HTML 기본 구조
+ * - SEO 메타 태그 (title, description, og:image)
+ * - Pretendard 폰트 CDN
+ * - Material Symbols CDN
+ * - Header + main + Footer 구조
+ */
+
+import '../styles/global.css';
+import Header from '../components/common/Header.astro';
+import Footer from '../components/common/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
+}
+
+const {
+  title = '새봄컨설팅 | AI 자동화로 빠르고 정확한 FDA 인증',
+  description = 'AI 자동화 + 전문 관세사 검토로 FDA 인증을 빠르고 정확하게. 기존 대비 93% 비용 절감.',
+  ogImage = '/og-image.png',
+  hideHeader = false,
+  hideFooter = false,
+} = Astro.props;
+
+const siteUrl = 'https://newbom.co.kr';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="ko" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="새봄컨설팅" />
+    <meta property="og:locale" content="ko_KR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+    <!-- Pretendard 폰트 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
+    />
+
+    <!-- Material Symbols Outlined 아이콘 -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    />
+
+    <title>{title}</title>
+  </head>
+  <body class="antialiased bg-white text-slate-800 font-sans">
+    {!hideHeader && <Header />}
+    <main>
+      <slot />
+    </main>
+    {!hideFooter && <Footer />}
+  </body>
+</html>
