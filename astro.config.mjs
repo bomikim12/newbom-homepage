@@ -5,16 +5,18 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server', // API 엔드포인트를 위한 SSR
-  adapter: vercel(),
+  site: 'https://newbom.co.kr', // 실제 도메인으로 변경
+  output: 'static', // GitHub Pages 정적 배포
   integrations: [
     react(),
     tailwind({
       applyBaseStyles: false, // global.css에서 직접 관리
     }),
   ],
+  build: {
+    assets: '_astro',
+  },
 });

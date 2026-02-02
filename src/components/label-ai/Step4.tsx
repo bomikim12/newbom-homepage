@@ -4,8 +4,8 @@
  * @SPEC docs/planning/06-screens.md#2.4
  */
 
-import { useState, useEffect } from 'react';
-import type { Ingredient, NutritionData, ProjectSettings, LeadRequest } from '../../lib/types';
+import { useState } from 'react';
+import type { Ingredient, NutritionData, ProjectSettings } from '../../lib/types';
 import { sodiumToSalt, kcalToKj } from '../../lib/utils';
 import { COMPANY_EMAIL, KAKAO_CHANNEL_URL } from '../../lib/constants';
 
@@ -43,8 +43,6 @@ export function Step4({
   onReset,
 }: Step4Props) {
   const [isCopied, setIsCopied] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-  const [sendStatus, setSendStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   // 알러지 성분 감지
   const detectAllergens = (): string[] => {
@@ -153,46 +151,23 @@ export function Step4({
     }
   };
 
-  // 이메일 발송
-  const handleSendEmail = async () => {
-    setIsSending(true);
-    setSendStatus('idle');
+  // 이메일 본문 생성 (mailto용)
+  const generateEmailBody = () => {
+    const body = `안녕하세요, 라벨링 전문가 검토를 요청합니다.
 
-    try {
-      const requestBody: LeadRequest = {
-        email: projectSettings.email,
-        productName: projectSettings.productName,
-        targetMarket: projectSettings.targetMarket,
-        targetLanguage: projectSettings.targetLanguage,
-        ingredients,
-        nutrition,
-        labelOutput,
-        complianceScore,
-      };
+[프로젝트 정보]
+- 제품명: ${projectSettings.productName}
+- 수출 대상국: ${projectSettings.targetMarket}
+- 판매 언어: ${projectSettings.targetLanguage}
+- 규정 준수율: ${complianceScore}%
 
-      const response = await fetch('/api/send-lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
-      });
+[생성된 라벨]
+${labelOutput}
 
-      if (response.ok) {
-        setSendStatus('success');
-      } else {
-        setSendStatus('error');
-      }
-    } catch (err) {
-      console.error('Send email error:', err);
-      setSendStatus('error');
-    } finally {
-      setIsSending(false);
-    }
+검토 부탁드립니다.
+감사합니다.`;
+    return encodeURIComponent(body);
   };
-
-  // 자동 이메일 발송 (한 번만)
-  useEffect(() => {
-    handleSendEmail();
-  }, []);
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -208,22 +183,6 @@ export function Step4({
       </div>
 
       <div className="space-y-6">
-        {/* 이메일 발송 상태 */}
-        {sendStatus === 'success' && (
-          <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl border border-green-200">
-            <span className="material-symbols-outlined text-green-600">mail</span>
-            <p className="text-sm text-green-700">
-              <strong>{projectSettings.email}</strong>로 라벨 정보가 전송되었습니다.
-            </p>
-          </div>
-        )}
-        {sendStatus === 'error' && (
-          <div className="flex items-center gap-3 p-4 bg-red-50 rounded-xl border border-red-200">
-            <span className="material-symbols-outlined text-red-600">error</span>
-            <p className="text-sm text-red-700">이메일 발송에 실패했습니다. 잠시 후 다시 시도해주세요.</p>
-          </div>
-        )}
-
         {/* 규정 준수율 */}
         <div className="bg-slate-50 p-6 rounded-xl">
           <div className="flex items-center justify-between mb-4">
@@ -281,7 +240,7 @@ export function Step4({
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href={`mailto:${COMPANY_EMAIL}?subject=[전문가 검토 요청] ${projectSettings.productName}&body=안녕하세요, 라벨링 전문가 검토를 요청합니다.%0A%0A- 제품명: ${projectSettings.productName}%0A- 수출 대상국: ${projectSettings.targetMarket}`}
+              href={`mailto:${COMPANY_EMAIL}?subject=[전문가 검토 요청] ${encodeURIComponent(projectSettings.productName)}&body=${generateEmailBody()}`}
               className="flex-1 py-3 bg-white text-navy rounded-xl font-bold text-center hover:shadow-lg transition-shadow flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined">mail</span>
