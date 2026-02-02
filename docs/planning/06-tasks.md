@@ -444,7 +444,7 @@ flowchart TD
 > 리소스: lead-email
 > 백엔드 유일한 API 엔드포인트
 
-### [ ] P3-R1-T1: Send Lead API 구현
+### [x] P3-R1-T1: Send Lead API 구현
 
 - **담당**: backend-specialist
 - **의존**: P0-T0.3
@@ -473,7 +473,7 @@ flowchart TD
 > React Island (client:load)
 > 4단계 위저드 UI
 
-### [ ] P3-S1-T1: Step 1 - 프로젝트 설정
+### [x] P3-S1-T1: Step 1 - 프로젝트 설정
 
 - **담당**: frontend-specialist
 - **의존**: P1-S0-T3
@@ -495,7 +495,7 @@ flowchart TD
 
 ---
 
-### [ ] P3-S1-T2: Step 2 - 원재료 분석
+### [x] P3-S1-T2: Step 2 - 원재료 분석
 
 - **담당**: frontend-specialist
 - **의존**: P3-S1-T1
@@ -516,7 +516,7 @@ flowchart TD
 
 ---
 
-### [ ] P3-S1-T3: Step 3 - 영양 성분 변환
+### [x] P3-S1-T3: Step 3 - 영양 성분 변환
 
 - **담당**: frontend-specialist
 - **의존**: P3-S1-T2
@@ -536,7 +536,7 @@ flowchart TD
 
 ---
 
-### [ ] P3-S1-T4: Step 4 - 최종 라벨 출력
+### [x] P3-S1-T4: Step 4 - 최종 라벨 출력
 
 - **담당**: frontend-specialist
 - **의존**: P3-S1-T3, P3-R1-T1
@@ -558,7 +558,7 @@ flowchart TD
 
 ---
 
-### [ ] P3-S1-T5: LabelAI 컨테이너
+### [x] P3-S1-T5: LabelAI 컨테이너
 
 - **담당**: frontend-specialist
 - **의존**: P3-S1-T1 ~ P3-S1-T4
@@ -577,7 +577,7 @@ flowchart TD
 
 ---
 
-### [ ] P3-S1-V: 라벨링 서비스 검증
+### [x] P3-S1-V: 라벨링 서비스 검증
 
 - **담당**: test-specialist
 - **의존**: P3-S1-T5
