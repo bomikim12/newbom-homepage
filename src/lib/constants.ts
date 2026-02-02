@@ -52,6 +52,16 @@ export const EXTERNAL_URLS = {
 };
 
 /**
+ * 회사 이메일
+ */
+export const COMPANY_EMAIL = EXTERNAL_URLS.EMAIL;
+
+/**
+ * 카카오톡 채널 URL
+ */
+export const KAKAO_CHANNEL_URL = EXTERNAL_URLS.KAKAO_CHANNEL;
+
+/**
  * 에러 메시지
  */
 export const ERROR_MESSAGES = {
