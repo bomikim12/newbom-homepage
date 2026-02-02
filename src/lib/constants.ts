@@ -47,7 +47,7 @@ export const DEFAULT_NUTRITION: NutritionData = {
  * 외부 URL
  */
 export const EXTERNAL_URLS = {
-  KAKAO_CHANNEL: 'https://pf.kakao.com/xxxxx', // TODO: 실제 카카오톡 채널 URL로 교체 필요
+  KAKAO_CHANNEL: 'https://open.kakao.com/me/newbom3',
   EMAIL: 'newbom@newbom.co.kr',
 };
 

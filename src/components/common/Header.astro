@@ -7,18 +7,24 @@
  * 기능:
  * - Fixed 헤더 (bg-white/90 backdrop-blur)
  * - 로고: 새봄컨설팅 (eco 아이콘 + 텍스트)
- * - 네비게이션: 서비스, FDA인증, EU통관, 일본인증, 무료라벨링
+ * - 네비게이션: 서비스, 무료라벨링
  * - CTA: [무료 견적 받기] 버튼
  * - 모바일: 햄버거 메뉴 + 드롭다운
  */
 
 const navLinks = [
-  { href: '#services', label: '서비스' },
-  { href: '#fda', label: 'FDA인증' },
-  { href: '#eu', label: 'EU통관' },
-  { href: '#japan', label: '일본인증' },
-  { href: '/label', label: '무료라벨링', isExternal: true },
+  { href: '/#services', label: '서비스', activePath: '/' },
+  { href: '/label', label: '무료라벨링', activePath: '/label' },
 ];
+
+const currentPath = Astro.url.pathname;
+
+function isActive(activePath: string): boolean {
+  if (activePath === '/') {
+    return currentPath === '/' || currentPath === '';
+  }
+  return currentPath.startsWith(activePath);
+}
 ---
 
 <header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
@@ -34,24 +40,19 @@ const navLinks = [
     <!-- Desktop Nav -->
     <div class="hidden md:flex items-center gap-8">
       {navLinks.map((link) => (
-        link.isExternal ? (
-          <a
-            href={link.href}
-            class="text-sm font-semibold text-slate-600 hover:text-deep-blue transition-colors"
-          >
-            {link.label}
-          </a>
-        ) : (
-          <a
-            href={link.href}
-            class="text-sm font-semibold text-slate-600 hover:text-deep-blue transition-colors"
-          >
-            {link.label}
-          </a>
-        )
+        <a
+          href={link.href}
+          class={`text-sm font-semibold transition-colors ${
+            isActive(link.activePath)
+              ? 'text-deep-blue border-b-2 border-deep-blue pb-1'
+              : 'text-slate-600 hover:text-deep-blue'
+          }`}
+        >
+          {link.label}
+        </a>
       ))}
       <a
-        href="#cta"
+        href="/#cta"
         class="px-5 py-2.5 bg-deep-blue text-white rounded-lg text-sm font-bold hover:bg-navy transition-colors"
       >
         무료 견적 받기
@@ -78,14 +79,18 @@ const navLinks = [
     {navLinks.map((link) => (
       <a
         href={link.href}
-        class="block text-slate-600 font-semibold py-3 hover:text-deep-blue transition-colors"
+        class={`block font-semibold py-3 transition-colors ${
+          isActive(link.activePath)
+            ? 'text-deep-blue border-l-4 border-deep-blue pl-3'
+            : 'text-slate-600 hover:text-deep-blue'
+        }`}
         data-mobile-link
       >
         {link.label}
       </a>
     ))}
     <a
-      href="#cta"
+      href="/#cta"
       class="block bg-deep-blue text-white rounded-lg px-5 py-3 text-center font-bold mt-4"
       data-mobile-link
     >
